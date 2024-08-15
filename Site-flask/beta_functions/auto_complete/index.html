@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Busca de Remédios</title>
+</head>
+<body>
+    <input type="text" id="searchInput" placeholder="Digite para buscar...">
+    <ul id="results"></ul>
+
+    <script>
+        document.getElementById('searchInput').addEventListener('input', function() {
+            const query = this.value;
+            console.log(`Query: ${query}`);
+            if (query.length > 0) {
+                fetch(`https://cf2d9e60-566f-412d-a11e-f7e760dc5ca2-00-22npzcudqex93.janeway.replit.dev:5000/api/search?q=${encodeURIComponent(query)}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Data received:', data);
+                        const results = document.getElementById('results');
+                        results.innerHTML = '';
+                        data.forEach(item => {
+                            const li = document.createElement('li');
+                            li.textContent = item;
+                            results.appendChild(li);
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching data:', error);
+                    });
+            } else {
+                document.getElementById('results').innerHTML = '';
+            }
+        });
+    </script>
+</body>
+</html>
